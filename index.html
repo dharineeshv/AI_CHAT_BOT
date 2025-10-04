@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gemini Web App</title>
   <style>
-/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
@@ -18,10 +17,8 @@ body {
   flex-direction: column;
   height: 100vh;
   background: #f5f7fa;
-  overflow: hidden; /* prevent body scroll */
 }
 
-/* ===== Header ===== */
 header {
   background: #4a90e2;
   color: white;
@@ -32,18 +29,15 @@ header {
   flex-shrink: 0;
 }
 
-/* ===== Chat Container ===== */
 .chat-container {
-  flex: 1 1 auto;
+  flex: 1;
   display: flex;
   flex-direction: column;
   padding: 10px;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.05);
-  min-height: 0; /* important for mobile flexbox scrolling */
 }
 
-/* ===== Messages ===== */
 .message {
   max-width: 80%;
   padding: 10px 14px;
@@ -52,7 +46,6 @@ header {
   line-height: 1.4;
   word-wrap: break-word;
   font-size: 1rem;
-  word-break: break-word;
 }
 
 .user {
@@ -69,13 +62,14 @@ header {
   border-bottom-left-radius: 0;
 }
 
-/* ===== Input Area ===== */
 .input-area {
   display: flex;
   padding: 10px;
   border-top: 1px solid #ddd;
   background: #fff;
-  flex-shrink: 0; /* keep it visible */
+  position: sticky;
+  bottom: 0;
+  width: 100%;
 }
 
 .input-area input {
@@ -102,7 +96,6 @@ header {
   background: #357abd;
 }
 
-/* ===== Inner Container (empty state) ===== */
 .inner-container {
   display: flex;
   justify-content: center;
@@ -123,7 +116,6 @@ header {
   color: #555;
 }
 
-/* ===== Typing animation dots ===== */
 .dots::after {
   content: '';
   display: inline-block;
@@ -141,7 +133,6 @@ header {
   100% { opacity: 0; }
 }
 
-/* ===== Mobile Responsive ===== */
 @media (max-width: 600px) {
   header {
     font-size: 1.2rem;
@@ -268,5 +259,6 @@ header {
   </script>
 </body>
 </html>
+
 
 
