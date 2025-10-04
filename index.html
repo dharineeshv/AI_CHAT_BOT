@@ -5,132 +5,168 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gemini Web App</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    body {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      background: #f5f7fa;
-    }
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f5f7fa;
+}
 
-    header {
-      background: #4a90e2;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+/* ===== Header ===== */
+header {
+  background: #4a90e2;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 
-    .chat-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: 15px;
-      overflow-y: auto;
-      background-color: rgba(0, 0, 0, 0.05);
-    }
+/* ===== Chat Container ===== */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow-y: auto;
+  background-color: rgba(0, 0, 0, 0.05);
+}
 
-    .message {
-      max-width: 80%;
-      padding: 10px 14px;
-      margin: 8px 0;
-      border-radius: 10px;
-      line-height: 1.4;
-      word-wrap: break-word;
-    }
+/* ===== Messages ===== */
+.message {
+  max-width: 80%;
+  padding: 10px 14px;
+  margin: 6px 0;
+  border-radius: 10px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  font-size: 1rem;
+  word-break: break-word;
+}
 
-    .user {
-      background: #4a90e2;
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 0;
-    }
+.user {
+  background: #4a90e2;
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 0;
+}
 
-    .bot {
-      background: #e0e0e0;
-      color: #333;
-      align-self: flex-start;
-      border-bottom-left-radius: 0;
-    }
+.bot {
+  background: #e0e0e0;
+  color: #333;
+  align-self: flex-start;
+  border-bottom-left-radius: 0;
+}
 
-    .input-area {
-      display: flex;
-      padding: 20px;
-      border-top: 1px solid #ddd;
-      background: #fff;
+/* ===== Input Area ===== */
+.input-area {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+}
 
-    }
+.input-area input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  outline: none;
+  font-size: 1rem;
+}
 
-    .input-area input {
-      flex: 1;
-      padding:12px;
-      border: 1px solid #ccc;
-      border-radius: 25px;
-      outline: none;
-      font-size: 1rem;
-      
-    }
+.input-area button {
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin-left: 8px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    .input-area button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      margin-left: 10px;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+.input-area button:hover {
+  background: #357abd;
+}
 
-    .input-area button:hover {
-      background: #357abd;
-    }
-    .inner-container {
-      display:flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      gap:20px;
-    }
-    .inner-container h1 {
-      color:blue;
-    }
+/* ===== Inner Container ===== */
+.inner-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 20px;
+}
 
-    /* Animated dots for typing */
-    .dots::after {
-      content: '';
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      margin-left: 2px;
-      border-radius: 50%;
-      background: #333;
-      animation: blink 1s infinite steps(1, start);
-    }
+.inner-container h1 {
+  font-size: 1.5rem;
+  color: #4a90e2;
+}
 
-    .dots::after {
-      animation-delay: 0s;
-    }
+.inner-container h2 {
+  font-size: 1rem;
+  color: #555;
+}
 
-    @keyframes blink {
-      0%, 20% { opacity: 0; }
-      50% { opacity: 1; }
-      100% { opacity: 0; }
-    }
+/* ===== Typing animation dots ===== */
+.dots::after {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 2px;
+  border-radius: 50%;
+  background: #333;
+  animation: blink 1s infinite steps(1, start);
+}
 
-    @media (max-width: 600px) {
-      header { font-size: 1.2rem; padding: 10px; }
-      .input-area input { font-size: 0.9rem; padding: 10px; }
-      .input-area button { padding: 10px 15px; }
-    }
-  </style>
+@keyframes blink {
+  0%, 20% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 600px) {
+  header {
+    font-size: 1.2rem;
+    padding: 10px;
+  }
+
+  .message {
+    font-size: 0.9rem;
+    max-width: 90%;
+  }
+
+  .input-area input {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .input-area button {
+    padding: 8px 12px;
+    margin-left: 5px;
+  }
+
+  .inner-container h1 {
+    font-size: 1.2rem;
+  }
+
+  .inner-container h2 {
+    font-size: 0.9rem;
+  }
+}
+</style>
 </head>
 <body>
   <header>🌟AI Chat Bot</header>
@@ -226,3 +262,4 @@
   </script>
 </body>
 </html>
+
