@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gemini Web App</title>
   <style>
+/* ===== Reset ===== */
 * {
   margin: 0;
   padding: 0;
@@ -17,6 +18,7 @@ body {
   flex-direction: column;
   height: 100vh;
   background: #f5f7fa;
+  overflow: hidden; /* prevent body scroll */
 }
 
 /* ===== Header ===== */
@@ -27,16 +29,18 @@ header {
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
+  flex-shrink: 0;
 }
 
 /* ===== Chat Container ===== */
 .chat-container {
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
   padding: 10px;
   overflow-y: auto;
   background-color: rgba(0, 0, 0, 0.05);
+  min-height: 0; /* important for mobile flexbox scrolling */
 }
 
 /* ===== Messages ===== */
@@ -71,6 +75,7 @@ header {
   padding: 10px;
   border-top: 1px solid #ddd;
   background: #fff;
+  flex-shrink: 0; /* keep it visible */
 }
 
 .input-area input {
@@ -97,7 +102,7 @@ header {
   background: #357abd;
 }
 
-/* ===== Inner Container ===== */
+/* ===== Inner Container (empty state) ===== */
 .inner-container {
   display: flex;
   justify-content: center;
@@ -166,6 +171,7 @@ header {
     font-size: 0.9rem;
   }
 }
+
 </style>
 </head>
 <body>
@@ -262,4 +268,5 @@ header {
   </script>
 </body>
 </html>
+
 
