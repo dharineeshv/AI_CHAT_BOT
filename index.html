@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemini Web App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background: #f5f7fa;
+    }
+
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    .message {
+      max-width: 80%;
+      padding: 10px 14px;
+      margin: 8px 0;
+      border-radius: 10px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .user {
+      background: #4a90e2;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0;
+    }
+
+    .bot {
+      background: #e0e0e0;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 0;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 20px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+
+    }
+
+    .input-area input {
+      flex: 1;
+      padding:12px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      outline: none;
+      font-size: 1rem;
+      
+    }
+
+    .input-area button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      margin-left: 10px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .input-area button:hover {
+      background: #357abd;
+    }
+    .inner-container {
+      display:flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      gap:20px;
+    }
+    .inner-container h1 {
+      color:blue;
+    }
+
+    /* Animated dots for typing */
+    .dots::after {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-left: 2px;
+      border-radius: 50%;
+      background: #333;
+      animation: blink 1s infinite steps(1, start);
+    }
+
+    .dots::after {
+      animation-delay: 0s;
+    }
+
+    @keyframes blink {
+      0%, 20% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @media (max-width: 600px) {
+      header { font-size: 1.2rem; padding: 10px; }
+      .input-area input { font-size: 0.9rem; padding: 10px; }
+      .input-area button { padding: 10px 15px; }
+    }
+  </style>
+</head>
+<body>
+  <header>🌟AI Chat Bot</header>
+
+  <div class="chat-container">
+    <div class="inner-container">
+      <h1 id="h11">Hello</h1>
+      <h2 id="h22">What Should We Do Today?</h2>
+    </div>
+   
+  </div>
+
+  <div class="input-area">
+    <input id="user_input" type="text" placeholder="Type your message..." />
+    <button>Send</button>
+  </div>
+
+  <script>
+    const api_key = "AIzaSyAxGZigRUqxXn5F7KdIuRrPgadrZG0YFxw"; 
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${api_key}`
+
+    let input = document.querySelector('#user_input');
+    let btn = document.querySelector('button');
+    let chat_container = document.querySelector('.chat-container');
+
+    btn.addEventListener('click', sendMessage);
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
+
+    function sendMessage() {
+      let input_value = input.value.trim();
+      if (!input_value) return;
+
+      chat_container.insertAdjacentHTML('beforeend', `<div class="message user">${input_value}</div>`);
+      input.value = "";
+      chat_container.scrollTop = chat_container.scrollHeight;
+
+      const typing_id = 'typing';
+      chat_container.insertAdjacentHTML('beforeend', `<div class="message bot" id="${typing_id}">Bot is typing<span class="dots">...</span></div>`);
+      chat_container.scrollTop = chat_container.scrollHeight;
+      changing()
+      getResponse(input_value, typing_id);
+    }
+
+    async function getResponse(input_value, typing_id) {
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: input_value }] }]
+          })
+        });
+
+        const data = await response.json();
+        let r = data.candidates[0].content.parts[0].text;
+
+        const typing_element = document.getElementById(typing_id);
+        if (typing_element) {
+          typing_element.outerHTML = `<div class="message bot">${r}</div>`;
+        }
+        chat_container.scrollTop = chat_container.scrollHeight;
+
+      } catch (err) {
+        const typing_element = document.getElementById(typing_id);
+        if (typing_element) {
+          typing_element.outerHTML = `<div class="message bot">Error Found...Please Try Again</div>`;
+        }
+        chat_container.scrollTop = chat_container.scrollHeight;
+      }
+    }
+   let flag=true 
+   let h1 = document.querySelector('#h11')
+   let h2 = document.querySelector('#h22')
+   function changing()
+   {
+    setInterval(()=>
+    {
+        
+        if(flag)
+        {
+            h1.innerHTML = "Hey..."
+            h2.innerHTML = "Let's Discuss Some New Topics"
+        }
+        else
+        {
+           h1.innerHTML = "Hello..."
+           h2.innerHTML = "What's On Your Mind?"
+        }
+        flag = !flag 
+    },20000)
+   }
+    
+  </script>
+</body>
+</html>
